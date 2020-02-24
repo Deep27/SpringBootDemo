@@ -2,11 +2,11 @@ package io.deep27soft.spring_boot_demo;
 
 import io.deep27soft.spring_boot_demo.model.Greeting;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -30,10 +30,14 @@ public class GreetingController {
         return greeting;
     }
 
-    @PostMapping("/greeting")
-    public Greeting greeting(@RequestParam(value = "id") long id) {
-        return greetings.stream()
-                .filter(g -> g.getId() == id).findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("No greeting with id " + id + "!"));
+    @GetMapping("/greetingById")
+    public Object greeting(@RequestParam(value = "id") Long id) {
+        Optional<Greeting> optionalGreeting = greetings.stream()
+                .filter(g -> g.getId() == id).findFirst();
+        Greeting greeting = new Greeting();
+        optionalGreeting.ifPresent(g -> greeting
+                        .withId(g.getId())
+                        .withContent(g.getContent()));
+        return greeting;
     }
 }

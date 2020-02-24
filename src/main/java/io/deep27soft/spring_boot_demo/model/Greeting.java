@@ -4,8 +4,12 @@ import java.util.Objects;
 
 public class Greeting {
 
-    private final long id;
-    private final String content;
+    private long id;
+    private String content;
+
+    public Greeting() {
+
+    }
 
     public Greeting(long id, String content) {
         this.id = id;
@@ -32,7 +36,17 @@ public class Greeting {
         return id;
     }
 
+    public Greeting withId(long id) {
+        this.id = id;
+        return this;
+    }
+
     public String getContent() {
         return content;
+    }
+
+    public Greeting withContent(String content) {
+        this.content = content;
+        return this;
     }
 }
